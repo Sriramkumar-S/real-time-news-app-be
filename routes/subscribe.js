@@ -8,6 +8,7 @@ const subscribeRouter = express.Router();
 export let mailFrequency = 'daily';
 
 subscribeRouter.post("/", async (req, res) => {
+  // console.log('Inside subscribeRouter')
   const { email, categories, frequency } = req.body;
   const subscriptionDetails = req.body;
   const subscriptionCollection = db.collection('subscriptions');
@@ -32,10 +33,11 @@ subscribeRouter.post("/", async (req, res) => {
         const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
-        subject: "Subscription Confirmation",
-        html: `<h3>Thank you for subscribing!</h3>
-                <p>You've subscribed to the following category: ${categories}</p>
-                <p>Frequency: ${frequency}</p>`,
+        subject: "Subscription Confirmation - ABC News",
+        html: `<h3>Thank you for subscribing to ABC News!</h3>
+                <p>You're subscription details<p>
+                <p><b>Category</b>: <span style="text-transform: capitalize">${categories}</span></p>
+                <p><b>Frequency</b>: <span style="text-transform: capitalize">${frequency}</span></p>`,
         };
 
         mailFrequency = frequency;

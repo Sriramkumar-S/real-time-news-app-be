@@ -29,46 +29,39 @@ const subscriptionCollection = db.collection('subscriptions');
 const subscriptions = await subscriptionCollection.find().toArray();
 
 function triggerEmailToUser(subscriptions) {
+    console.log("inside trigger email function")
     if(subscriptions) {
         for(let subscription of subscriptions) {
             const { frequency, email, categories } = subscription;
             let emailFrequency;
              switch(frequency) {
                 case 'hourly':
-                    // emailFrequency = 60 * 60 * 1000;
-                    // emailFrequency = 1 * 60 * 1000;
-                    const hourlyJob = new CronJob('0 * * * * *', function() {
-                        console.log('This job is triggered every minute!');
+                    const hourlyJob = new CronJob('0 0 * * * *', function() {
+                        console.log('This job is triggered every hour!');
                         sendEmails(email, categories);
                       });
                       
                       hourlyJob.start();
                     break;
                 case 'daily':
-                    // emailFrequency = 24 * 60 * 60 * 1000;
-                    // emailFrequency = 2 * 60 * 1000;
-                    const dailyJob = new CronJob('0 */3 * * * *', function() {
-                        console.log('This job is triggered every 3 minutes!'); 
+                    const dailyJob = new CronJob('0 0 0 * * *', function() {
+                        console.log('This job is triggered every day!'); 
                         sendEmails(email, categories);
                       });
                       
                       dailyJob.start();
                     break;
                 case 'weekly':
-                    // emailFrequency = 7 * 24 * 60 * 60 * 1000;
-                    // emailFrequency = 3 * 60 * 1000;
-                    const weeklyJob = new CronJob('0 */5 * * * *', function() {
-                        console.log('This job is triggered every 5 minutes!'); 
+                    const weeklyJob = new CronJob('0 0 0 * * 0', function() {
+                        console.log('This job is triggered every week!'); 
                         sendEmails(email, categories);
                       });
                       
                       weeklyJob.start();
                     break;
                 case 'monthly':
-                    // emailFrequency = 30 * 7 * 24 * 60 * 60 * 1000;
-                    // emailFrequency = 4 * 60 * 1000;
-                    const monthlyJob = new CronJob('0 */7 * * * *', function() {
-                        console.log('This job is triggered every 7 minutes!'); 
+                    const monthlyJob = new CronJob('0 0 0 1 * *', function() {
+                        console.log('This job is triggered every month!'); 
                         sendEmails(email, categories);
                       });
                       
@@ -78,41 +71,12 @@ function triggerEmailToUser(subscriptions) {
                     emailFrequency = 24 * 60 * 60 * 1000;
                     break;
             }
-            // setInterval(() => {
-            //     sendEmails(email, categories);
-            // }, emailFrequency)
         }
     }
 }
-
-// if(subscriptions) {
-//     subscriptions.forEach(subscription => {
-//         let emailFrequency;
-//         if(subscription.frequency === 'hourly') {
-//             emailFrequency = 60 * 60 * 24;
-//         }else if(subscription.frequency === 'daily') {
-//             emailFrequency = 24 * 60 * 60 * 1000;
-//         }else if(subscription.frequency === 'weekly') {
-//             emailFrequency = 7 * 24 * 60 * 60 * 1000;
-//         }else if(subscription.frequency === 'monthly') {
-//             emailFrequency = 30 * 7 * 24 * 60 * 60 * 1000;
-//         }
-//     })
-// }
-
-
-
-// setInterval(() => {
-//     console.log(mailFrequency);
-//     console.log(subscriptions);
-//     sendEmails();
-// }, 3 * 60 * 1000);
 
 triggerEmailToUser(subscriptions);
 
 server.listen(PORT, () => {
     console.log("Server listening on ", PORT);
 });
-
-//
-
