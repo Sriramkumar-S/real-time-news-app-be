@@ -6,15 +6,11 @@ import { db } from "../db-utils/mongoDB-connection.js";
 export const sendEmails = async (email, categories) => {
   try {
 
-    // 
-    const subscriptionCollection = db.collection('subscriptions');
-    const subscriptions = await subscriptionCollection.find().toArray();
-    // 
-    // const subscriptions = await Subscription.find();
+    // const subscriptionCollection = db.collection('subscriptions');
+    // const subscriptions = await subscriptionCollection.find().toArray();
     const apiKey = process.env.NEWS_API_KEY;
 
-    for (const subscription of subscriptions) {
-      const { email, categories } = subscription;
+    const { email, categories } = {email, categories};
 
       const response = await fetch(
         `https://newsapi.org/v2/top-headlines?category=${categories}&apiKey=${apiKey}`
@@ -47,7 +43,9 @@ export const sendEmails = async (email, categories) => {
 
       await transporter.sendMail(mailOptions);
 
-    }
+    // for (const subscription of subscriptions) {
+      
+    // }
 
     console.log("Emails sent successfully.");
   } catch (error) {
