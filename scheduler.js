@@ -11,8 +11,7 @@ if(subscriptions) {
         const { frequency, email, categories } = subscription;
          switch(frequency) {
             case 'hourly':
-                // const hourlyJob = new CronJob('0 0 * * * *', function() {
-                    const hourlyJob = new CronJob('0 * * * * *', function() {
+                const hourlyJob = new CronJob('0 0 * * * *', function() {
                     console.log('This job is triggered every hour!');
                     sendEmails(email, categories);
                   });
@@ -49,8 +48,3 @@ if(subscriptions) {
         }
     }
 }
-
-// function triggerEmailToUser(subscriptions) {
-//     console.log("inside trigger email function")
-    
-// }
