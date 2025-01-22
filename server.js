@@ -5,8 +5,8 @@ import { connectToMongoose } from './db-utils/mongoose-connection.js';
 import { connectToDB } from './db-utils/mongoDB-connection.js';
 import newsRouter from "./routes/news.js";
 import subscribeRouter from "./routes/subscribe.js";
-// import { SendEmails } from "./utils/sendEmails.js";
-import './scheduler.js'
+import { scheduleJobs } from './scheduler.js';
+import { db } from "./db-utils/mongoDB-connection.js"
 
 dotenv.config();
 
@@ -20,6 +20,10 @@ server.use('/api/subscribe',subscribeRouter);
 
 await connectToDB();
 await connectToMongoose();
+
+const subscriptionCollection = db.collection('subscriptions');
+const subscriptions = await subscriptionCollection.find().toArray();
+scheduleJobs(subscriptions, 'onLoad');
 
 server.listen(PORT, () => {
     console.log("Server listening on ", PORT);

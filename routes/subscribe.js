@@ -3,12 +3,17 @@ import Subscription from "../db-utils/Subscription.js";
 import transporter from "../utils/mailer.js";
 import { db } from "../db-utils/mongoDB-connection.js";
 import { v4 } from "uuid";
+// import '../scheduler.js'
+// import { task } from "../emailScheduler.js";
+import { CronJob } from 'cron';
+import { sendEmails } from "../utils/sendEmails.js";
+import { scheduleJobs } from "../scheduler.js";
 
 const subscribeRouter = express.Router();
-export let mailFrequency = 'daily';
+// export let mailFrequency = 'daily';
 
 subscribeRouter.post("/", async (req, res) => {
-  // console.log('Inside subscribeRouter')
+  console.log('Inside subscribeRouter')
   const { email, categories, frequency } = req.body;
   const subscriptionDetails = req.body;
   const subscriptionCollection = db.collection('subscriptions');
@@ -40,9 +45,10 @@ subscribeRouter.post("/", async (req, res) => {
                 <p><b>Frequency</b>: <span style="text-transform: capitalize">${frequency}</span></p>`,
         };
 
-        mailFrequency = frequency;
-
         await transporter.sendMail(mailOptions);
+
+        const subsciptionDetails = await subscriptionCollection.findOne({ email: subscriptionDetails.email });
+        await scheduleJobs(subsciptionDetails, 'onSubscription')
 
         res.status(201).json({ message: "Subscription successful" });
     }
@@ -53,5 +59,4 @@ subscribeRouter.post("/", async (req, res) => {
 });
 
 export default subscribeRouter;
-// export { mailFrequency };
 
