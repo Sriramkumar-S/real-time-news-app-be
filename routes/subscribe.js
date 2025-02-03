@@ -21,6 +21,7 @@ subscribeRouter.post("/", async (req, res) => {
   try {
     const subscription = await subscriptionCollection.findOne({ email: subscriptionDetails.email });
     if(subscription) {
+        alert(`Subscription Already Exist for ${subsciptionDetails.email}`)
         res.status(400).json({ msg: 'Subscription Already Exist' })
     } else {
 
@@ -28,8 +29,6 @@ subscribeRouter.post("/", async (req, res) => {
             ...subscriptionDetails,
         });
         await subscriptionObj.validate();
-        // const subscription = new Subscription({ email, categories, frequency });
-        // await subscription.save();
         await subscriptionCollection.insertOne({
             ...subscriptionDetails,
             id: v4()

@@ -7,6 +7,9 @@ import newsRouter from "./routes/news.js";
 import subscribeRouter from "./routes/subscribe.js";
 import { scheduleJobs } from './scheduler.js';
 import { db } from "./db-utils/mongoDB-connection.js"
+import loginRouter from './routes/login.js';
+import unsubscribeRouter from './routes/unsubscribe.js';
+import signoutRouter from './routes/signout.js';
 
 dotenv.config();
 
@@ -17,6 +20,9 @@ server.use(express.json());
 server.use(cors());
 server.use('/api/news', newsRouter);
 server.use('/api/subscribe',subscribeRouter);
+server.use('/api/signup', loginRouter);
+server.use('/api/unsubscribe', unsubscribeRouter);
+server.use('/api/signout', signoutRouter);
 
 await connectToDB();
 await connectToMongoose();

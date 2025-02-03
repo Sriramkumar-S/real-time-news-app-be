@@ -12,7 +12,7 @@ export const connectToMongoose = async () => {
     try {
         // await mongoose.connect(localUrl); // Connected to Mongoose
         await mongoose.connect(cloudDbUrl); // Connected to Mongoose
-        console.log("Conected to mongoose")
+        console.log("Connected to mongoose")
     } catch (error) {
         console.log("Error in connecting to Mongoose", error);
         process.exit(1)
