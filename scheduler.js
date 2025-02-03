@@ -21,7 +21,8 @@ function scheduleFrequency(subscription) {
     email = subscription.email;
     categories = subscription.categories;
     if(frequency === 'hourly') {
-        cronExpression = '0 0 * * * *';
+        // cronExpression = '0 0 * * * *';
+        cronExpression = '0 */2 * * * *';
     }else if(frequency === 'daily') {
         cronExpression = '0 0 0 * * *';
     }else if(frequency === 'weekly') {
