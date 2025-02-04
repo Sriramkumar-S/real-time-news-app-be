@@ -31,6 +31,10 @@ const subscriptionCollection = db.collection('subscriptions');
 const subscriptions = await subscriptionCollection.find().toArray();
 scheduleJobs(subscriptions, 'onLoad');
 
+setInterval(() => {
+    console.log('Triggering every five minutes');
+}, 5 * 60 * 1000)
+
 server.listen(PORT, () => {
     console.log("Server listening on ", PORT);
 });
