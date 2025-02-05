@@ -13,7 +13,7 @@ export const job = new CronJob('0 */14 * * * *', async () => {
     fetch(`${backend_url}/api/news?category=general`)
       .then((res) => {
         res.json();
-        if(res.ok) console.log(`Server restarted successfully at ${new Date().toLocaleTimeString()}`);
+        if(res.ok) console.log(`Server restarted successfully at ${new Date().toTimeString()}`);
         else console.error('Error restarting server:', res.status);
         })
       .catch((error) => console.error(error));
