@@ -10,6 +10,7 @@ import { db } from "./db-utils/mongoDB-connection.js"
 import loginRouter from './routes/login.js';
 import unsubscribeRouter from './routes/unsubscribe.js';
 import signoutRouter from './routes/signout.js';
+import { job } from './serverRestart.js';
 
 dotenv.config();
 
@@ -31,9 +32,8 @@ const subscriptionCollection = db.collection('subscriptions');
 const subscriptions = await subscriptionCollection.find().toArray();
 scheduleJobs(subscriptions, 'onLoad');
 
-setInterval(() => {
-    console.log('Triggering every five minutes');
-}, 5 * 60 * 1000)
+// Restart Job after 14 minutes
+job.start();
 
 server.listen(PORT, () => {
     console.log("Server listening on ", PORT);
