@@ -46,8 +46,11 @@ subscribeRouter.post("/", async (req, res) => {
 
         await transporter.sendMail(mailOptions);
 
-        const subsciptionDetails = await subscriptionCollection.findOne({ email: subscriptionDetails.email });
-        await scheduleJobs(subsciptionDetails, 'onSubscription')
+        // const subsciptionDetails = await subscriptionCollection.findOne({ email: subscriptionDetails.email });
+        // await scheduleJobs(subsciptionDetails, 'onSubscription')
+
+        const subscriptions = await subscriptionCollection.find().toArray();
+        await scheduleJobs(subscriptions, 'onSubscription');
 
         res.status(201).json({ message: "Subscription successful" });
     }
