@@ -33,7 +33,7 @@ const subscriptions = await subscriptionCollection.find().toArray();
 scheduleJobs(subscriptions, 'onLoad');
 
 // Restart Job after 14 minutes
-job.start();
+// job.start();
 
 server.listen(PORT, () => {
     console.log("Server listening on ", PORT);
